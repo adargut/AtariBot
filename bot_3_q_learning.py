@@ -1,7 +1,6 @@
 import gym
 import random
 import numpy as np
-from typing import List
 
 random.seed(0)
 np.random.seed(0)
@@ -10,13 +9,14 @@ np.random.seed(0)
 class QBot:
     """Bot playing Frozen Lake with q-table (reinforcement learning)"""
 
-    def __init__(self, num_games=400, name='Q bot', discount=0.8, lr=0.9):
+    def __init__(self, num_games=4000, name='Q bot', discount=0.9, lr=0.9, report_interval=10):
         self.num_games = num_games
         self.name = name
         self.results = np.zeros(shape=num_games)
         self.games_played = 0
         self.discount = discount
         self.lr = lr
+        self.report_interval = report_interval
         self.q_table = None
         self.env = None
         self.seed = None
@@ -38,7 +38,9 @@ class QBot:
             game_reward += reward
             state = next_state
 
-        print(self.name, 'achieved a score of', game_reward, 'in game number', self.games_played + 1)
+        if (self.games_played + 1) % self.report_interval == 0:
+            self.display_results()
+
         self.results.put(self.games_played, game_reward)
         self.games_played += 1
 
@@ -55,7 +57,7 @@ class QBot:
         """Average results over all the games played"""
 
         print(self.name, 'achieved an average score of',
-              np.average(self.results), 'over', self.games_played, 'games')
+              np.sum(self.results) / self.games_played, 'over', self.games_played + 1, 'games')
 
 
 def main():

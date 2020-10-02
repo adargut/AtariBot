@@ -23,12 +23,13 @@ class QBot:
         self.discount = discount
         self.lr = lr
         self.report_interval = report_interval
+        self.exploration_probability = exploration_probability
         self.q_table = None
         self.env = None
         self.seed = None
         self.session = None
-        self.exploration_probability = exploration_probability
-        self.n_obs, self.n_actions = self.env.observation_space.n, self.env.action_space.n
+        self.n_obs = None
+        self.n_actions = None
 
         # Neural network architecture
 
